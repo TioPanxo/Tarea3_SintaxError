@@ -23,13 +23,6 @@ char * txt (char * temp, int pos )
 }
 
 
-typedef struct direccion {
-    int cordX;   //Posciciones x e y de la direccion
-    int cordY;
-    int identificador;  //"Numero" de la direccion segun el archivo .txt
-    HashMap * distancia;
-} Direccion;
-
 void importarArchivo (HashMap * direcciones) {
     //char nombreArchivo[50];
 
@@ -61,10 +54,33 @@ void importarArchivo (HashMap * direcciones) {
         x = txt(linea, 0);
         y = txt(linea, 1);
 
-        newAdress->cordX = atoi(x);
+        /** newAdress->cordX = atoi(x);
         newAdress->cordY = atoi(y);
-        newAdress->identificador = id;
+        newAdress->identificador = id; **/
+        
+        agregarMapa(direcciones, x, y, id);
         id++;
+
         printf ("X: %d - Y: %d - ID: %d\n",newAdress->cordX,newAdress->cordY, newAdress->identificador );
     }
+}
+
+
+void agregarMapa(HashMap * direcciones,char * x, char * y,int id) {
+    Direccion * entrega;
+    if (searchMap(direcciones, id) == NULL)
+    {
+        entrega = crearDireccion(id);
+        entrega->cordX = atoi(x);
+        entrega->cordY = atoi(y);
+        insertMap(direcciones, id, entrega);
+    }
+}
+
+Direccion * crearDireccion (int id) 
+{
+    Direccion * newAdress = (Direccion *) malloc (sizeof(Direccion));
+    newAdress->identificador = id;
+    newAdress->distancia = createMap(100);
+    return newAdress;
 }
