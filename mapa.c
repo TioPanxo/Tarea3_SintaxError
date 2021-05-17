@@ -49,7 +49,7 @@ void importarArchivo (HashMap * direcciones) {
 
     char * linea = (char*)malloc(1024*sizeof(char));
     char * x, *y;
-    char * coma = ",";
+    int id = 0;
 
     //linea = fgets(linea, 1024, archivo);
     Direccion * newAdress;
@@ -63,7 +63,8 @@ void importarArchivo (HashMap * direcciones) {
 
         newAdress->cordX = atoi(x);
         newAdress->cordY = atoi(y);
-
-        printf ("X: %d - Y: %d\n",newAdress->cordX,newAdress->cordY );
+        newAdress->identificador = id;
+        id++;
+        printf ("X: %d - Y: %d - ID: %d\n",newAdress->cordX,newAdress->cordY, newAdress->identificador );
     }
 }
