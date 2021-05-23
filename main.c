@@ -3,7 +3,9 @@
 #include <stdbool.h>
 #include <string.h>
 #include "hashmap.h"
-#include "mapa.h"
+#include "entregas.h"
+
+
 int main ()
 {
     HashMap * direcciones = createMap(100);

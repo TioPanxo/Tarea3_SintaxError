@@ -2,7 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include "hashmap.h"
-#include "mapa.h"
+#include "entregas.h"
+
+typedef struct direccion {
+    int cordX;   //Posciciones x e y de la direccion
+    int cordY;
+    int identificador;  //"Numero" de la direccion segun el archivo .txt
+    int visitada;
+} Direccion;
 
 /** https://www.tutorialspoint.com/c_standard_library/c_function_strtok.htm
  * Reciclado un poco del get_csv_field (o la logica mas que nada de las posiciones de la "," en este caso, son " ") **/
@@ -67,20 +74,13 @@ void importarArchivo (HashMap * direcciones) {
 
 
 void agregarMapa(HashMap * direcciones,char * x, char * y,int id) {
-    Direccion * entrega;
-    if (searchMap(direcciones, id) == NULL)
-    {
-        entrega = crearDireccion(id);
-        entrega->cordX = atoi(x);
-        entrega->cordY = atoi(y);
-        insertMap(direcciones, id, entrega);
-    }
-}
-
-Direccion * crearDireccion (int id) 
-{
-    Direccion * newAdress = (Direccion *) malloc (sizeof(Direccion));
-    newAdress->identificador = id;
-    newAdress->distancia = createMap(100);
-    return newAdress;
+    Direccion * entrega = (Direccion *)malloc(sizeof(Direccion));
+    entrega->cordX = atoi(x);
+    entrega->cordY = atoi(y);
+    entrega->identificador = id;
+    char auxId[5];
+    sprintf(auxId,"%d",id);
+    entrega->visitada = 0;
+    insertMap(direcciones, auxId, entrega);
+    
 }
