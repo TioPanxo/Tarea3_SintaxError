@@ -4,6 +4,7 @@
 #include <string.h>
 #include "hashmap.h"
 #include "entregas.h"
+#include "list.h"
 
 
 int main ()
@@ -15,27 +16,26 @@ int main ()
     int menu = 0;
     int op;
 
-    while (menu >= 0 && menu <= 10) {
+    while (menu >= 0 && menu <= 8) {
         menu = -1;
         printf("===============================================================\n");
-        printf("                            POKEDEX                            \n");
+        printf("                             RUTAS                             \n");
         printf("===============================================================\n");
-        printf("|   1.- Importar o Exportar Pokemon                           |\n");
-        printf("|   2.- Pokemon Atrapado                                      |\n");
-        printf("|   3.- Evolucionar Pokemon                                   |\n");
-        printf("|   4.- Buscar mis Pokemon por tipo                           |\n");
-        printf("|   5.- Buscar mis Pokemon por nombre                         |\n");
-        printf("|   6.- Buscar Pokemon por nombre en Pokedex                  |\n");
-        printf("|   7.- Mostrar todos los Pokemon de la Pokedex               |\n");
-        printf("|   8.- Mostrar mis Pokemon ordenados por PC                  |\n");
-        printf("|   9.- Liberar Pokemon                                       |\n");
-        printf("|  10.- Mostrar Pokemon por region                            |\n");
-        printf("|   0.- Salir                                                 |\n");
+        printf("|   1.- Importar archivo de coordenadas                       |\n");
+        printf("|   2.- Distancia entre entregas                              |\n");
+        printf("|   3.- Mostrar 3 entregas mas cercanas a las coordenadas     |\n");
+        printf("|       ingresadas                                            |\n");
+        printf("|   4.- Crea una ruta                                         |\n");
+        printf("|   5.- Generar ruta aleatoria                                |\n");
+        printf("|   6.- Mejorar ruta                                          |\n");
+        printf("|   7.- Mostrar rutas                                         |\n");
+        printf("|   8.- Mejor rutas                                           |\n");
+        printf("|   0.- Salir del programa                                    |\n");
         printf("===============================================================\n");
         printf(" Ingrese un numero: ");
         scanf(" %d", &menu);
 
-        while(menu < 0 || menu > 10){
+        while(menu < 0 || menu > 8){
             printf ("===============================================================\n");
             printf (" Por favor ingrese uno de los numeros anteriores: ");
             while(getchar()!='\n'); //limpiar buffer del teclado en caso de que el usuario ingrese una 
@@ -51,6 +51,7 @@ int main ()
             //op = -1;
             case 1:
                 importarArchivo (direcciones);
+                flag = 1;
                 printf ("===============================================================\n");
                 printf ("          Volver al menu: 1 - Salir del programa: 0\n");
                 printf ("===============================================================\n");
@@ -69,10 +70,10 @@ int main ()
 
             case 2:
                 if (flag == 0){
-                    printf(" Archivo no iniciado, recuerde importar sus Pokemon\n");
+                    printf(" Archivo no iniciado, recuerde importar Direcciones\n");
                     break;
                 } 
-                //FUNCION
+                distancia2Entregas(direcciones);
                 printf ("===============================================================\n");
                 printf ("          Volver al menu: 1 - Salir del programa: 0\n");
                 printf ("===============================================================\n");
@@ -91,10 +92,10 @@ int main ()
 
             case 3:
                 if (flag == 0){
-                    printf(" Archivo no iniciado, recuerde importar Pokemon\n");
+                    printf(" Archivo no iniciado, recuerde importar Direcciones\n");
                     break;
                 } 
-                //FUNCION
+                mostrar3EntregasCercanas(direcciones);
                 printf ("===============================================================\n");
                 printf ("          Volver al menu: 1 - Salir del programa: 0\n");
                 printf ("===============================================================\n");
@@ -112,10 +113,10 @@ int main ()
 
             case 4:
                 if (flag == 0){
-                    printf(" Archivo no iniciado, recuerde importar Pokemon\n");
+                    printf(" Archivo no iniciado, recuerde importar Direcciones\n");
                     break;
                 } 
-                //FUNCION
+                //FUNCION***********************************************************************
                 printf ("===============================================================\n");
                 printf ("          Volver al menu: 1 - Salir del programa: 0\n");
                 printf ("===============================================================\n");
@@ -133,10 +134,10 @@ int main ()
 
             case 5:
                 if (flag == 0){
-                    printf(" Archivo no iniciado, recuerde importar Pokemon\n");
+                    printf(" Archivo no iniciado, recuerde importar Direcciones\n");
                     break;
                 } 
-                //FUNCION
+                //FUNCION***********************************************************************
                 printf ("===============================================================\n");
                 printf ("          Volver al menu: 1 - Salir del programa: 0\n");
                 printf ("===============================================================\n");
@@ -154,10 +155,10 @@ int main ()
 
             case 6:
                 if (flag == 0){
-                    printf(" Archivo no iniciado, recuerde importar Pokemon\n");
+                    printf(" Archivo no iniciado, recuerde importar Direcciones\n");
                     break;
                 } 
-                //FUNCION
+               //FUNCION***********************************************************************
                 printf ("===============================================================\n");
                 printf ("          Volver al menu: 1 - Salir del programa: 0\n");
                 printf ("===============================================================\n");
@@ -175,10 +176,10 @@ int main ()
 
             case 7:
                 if (flag == 0){
-                    printf(" Archivo no iniciado, recuerde importar Pokemon\n");
+                    printf(" Archivo no iniciado, recuerde importar Direcciones\n");
                     break;
                 } 
-                //FUNCION
+                //FUNCION***********************************************************************
                 printf ("===============================================================\n");
                 printf ("          Volver al menu: 1 - Salir del programa: 0\n");
                 printf ("===============================================================\n");
@@ -196,10 +197,10 @@ int main ()
 
             case 8:
                 if (flag == 0){
-                    printf(" Archivo no iniciado, recuerde importar Pokemon\n");
+                    printf(" Archivo no iniciado, recuerde importar Direcciones\n");
                     break;
                 } 
-                //FUNCION
+                //FUNCION***********************************************************************
                 printf ("===============================================================\n");
                 printf ("          Volver al menu: 1 - Salir del programa: 0\n");
                 printf ("===============================================================\n");
