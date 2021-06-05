@@ -2,14 +2,16 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <time.h>
 #include "list.h"
 #include "hashmap.h"
 #include "entregas.h"
 
 
 
-int main ()
-{
+int main (){
+
+    srand(time(NULL));
     HashMap * direcciones = createMap(100);
     HashMap * rutasCreadas = createMap(100);
     char poscicion[20]; //ASUMO que no tendra tantos digitos ...
@@ -139,7 +141,7 @@ int main ()
                     printf(" Archivo no iniciado, recuerde importar Direcciones\n");
                     break;
                 } 
-                //FUNCION***********************************************************************
+                crearRutaAleatoria(direcciones,rutasCreadas);
                 printf ("===============================================================\n");
                 printf ("          Volver al menu: 1 - Salir del programa: 0\n");
                 printf ("===============================================================\n");

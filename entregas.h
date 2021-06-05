@@ -34,5 +34,6 @@ void * buscarLista(List * list,int key);
 
 void crearRuta(HashMap * direcciones,HashMap * rutasCreadas);
 
+void crearRutaAleatoria(HashMap * direcciones,HashMap * rutasCreadas);
 
 #endif /** entregas.h **/

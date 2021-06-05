@@ -368,3 +368,45 @@ void crearRuta(HashMap * direcciones,HashMap * rutasCreadas){
     gets(nombreRuta);
     insertMap(rutasCreadas,nombreRuta,ruta);
 } 
+
+void crearRutaAleatoria(HashMap * direcciones,HashMap * rutasCreadas){
+    Direccion * direccionInicial = (Direccion *)malloc(sizeof(Direccion));
+    direccionInicial->cordX = 0;
+    direccionInicial->cordY = 0;
+    direccionInicial->identificador = 0;
+    direccionInicial->visitada = 1;
+
+    Direccion * actual = direccionInicial;
+    Direccion * auxDireccion;
+
+    List * ruta = createList();
+
+    HashMap * auxDirecciones = copiarHashmap(direcciones);
+
+    int entrada = 0;
+    char auxId[5];
+    List * auxAdjNodes = get_adj_nodes(auxDirecciones,actual);
+    int largo = get_size(auxAdjNodes);
+
+    while(first(auxAdjNodes) != NULL){
+        entrada = rand() % (largo + 1);
+        actual = buscarLista(auxAdjNodes,entrada);
+        while(actual == NULL){
+            entrada = rand() % (largo + 1);
+            actual = buscarLista(auxAdjNodes,entrada);
+
+        }
+        pushBack(ruta,actual);
+        sprintf(auxId,"%d",entrada);
+        auxDireccion = searchMap(auxDirecciones,auxId);
+        auxDireccion->visitada = 1;
+        auxAdjNodes = get_adj_nodes(auxDirecciones,actual);
+    }
+    direccionInicial = first(ruta);
+    direccionInicial->distancia = calcularDistancia(direccionInicial,actual);
+    mostrarRuta(ruta);
+    printf(" Ingrese un nombre para la ruta: ");
+    char * nombreRuta = (char*)malloc(sizeof(char)*50);
+    gets(nombreRuta);
+    insertMap(rutasCreadas,nombreRuta,ruta);
+}
