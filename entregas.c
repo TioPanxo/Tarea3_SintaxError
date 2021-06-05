@@ -12,7 +12,7 @@ typedef struct Direccion {
     int cordY;
     int identificador;  //"Numero" de la direccion segun el archivo .txt
     int visitada;       //const value 0
-    double distancia; //Distancia hcaia la siguiente Direccion /const value 0
+    double distancia; //Distancia desde la direccion anterior
 } Direccion;
 
 /** https://www.tutorialspoint.com/c_standard_library/c_function_strtok.htm
@@ -153,7 +153,7 @@ void distancia2Entregas(HashMap * direcciones){
     scanf("%s",&entrada1);
     Direccion * aux1 = searchMap(direcciones,entrada1);
     if(aux1 == NULL){
-        printf(" Id no valida, por favor ingrese una id de la lista");
+        printf(" Id no valida, por favor ingrese una id de la lista: ");
         scanf("%s",&entrada1);
         Direccion * aux1 = searchMap(direcciones,entrada1);
     }
@@ -162,7 +162,7 @@ void distancia2Entregas(HashMap * direcciones){
     scanf("%s",&entrada2);
     Direccion * aux2 = searchMap(direcciones,entrada2);
     if(aux2 == NULL){
-        printf(" Id no valida, por favor ingrese una id de la lista");
+        printf(" Id no valida, por favor ingrese una id de la lista: ");
         scanf("%s",&entrada2);
         Direccion * aux2 = searchMap(direcciones,entrada2);
     }
@@ -222,8 +222,6 @@ void mostrar3EntregasCercanas(HashMap * direcciones){
     }
 }
 
-
-
 Direccion* copy(Direccion* n){
     Direccion* new=(Direccion*) malloc(sizeof(Direccion));
     *new = *n;
@@ -251,3 +249,120 @@ void * get_adj_nodes(HashMap * direcciones,Direccion * n){
     return list;
 }
 
+void * copiarHashmap(HashMap * direcciones){
+    //copia del mapa
+    HashMap * copiaMapa = createMap(100);
+
+    //nodo que se desea copiar
+    Direccion * aux = firstMap(direcciones);
+
+    //copia del nodo
+    Direccion * copia;
+
+    char auxKey[5];
+
+    while(aux != NULL){
+        copia = copy(aux);
+        sprintf(auxKey,"%d",copia->identificador);
+        insertMap(copiaMapa,auxKey,copia);
+        aux = nextMap(direcciones);
+    }
+    return copiaMapa;
+}
+
+void mostrarDireccionesPorDistancia(List * list){
+    Direccion ** auxList = (Direccion**) malloc(sizeof(Direccion * )*get_size(list));
+
+    int largo = get_size(list);
+
+    Direccion * node = first(list);
+    for(int i = 0;node != NULL;i++){
+        auxList[i] = node;
+        node = next(list);
+    }
+
+    bubbleSortDistancia(auxList,largo);
+
+    for(int i = 0;i < largo;i++){
+        printf(" Distancia: %.2lf - ID: %d - Coordenada X: %d - Coordenada Y: %d\n",auxList[i]->distancia,auxList[i]->identificador,auxList[i]->cordX,auxList[i]->cordY);
+    }
+}
+
+void mostrarRuta(List * ruta){
+    double distanciaRuta = 0;
+    Direccion * aux = first(ruta);
+    int flag = 0;
+    while(aux != NULL){
+        if(flag == 0){
+            printf(" %d ",aux->identificador);
+            flag = 1;
+        }
+        else printf("- %d ",aux->identificador);
+        aux = next(ruta);
+        distanciaRuta += aux->distancia;
+    }
+    printf("\n Distancia ruta: %.2lf\n",distanciaRuta);
+    aux = first(ruta);
+    printf(" Distancia desde la direccion inicial hasta la ultima: %.2lf\n",aux->distancia);
+}
+
+void * buscarLista(List * list,int key){
+    Direccion * aux = first(list);
+    while(aux != NULL){
+        if(aux->identificador == key) return aux;
+        aux = next(list);
+    }
+    return NULL;
+}
+
+void crearRuta(HashMap * direcciones,HashMap * rutasCreadas){
+    int cordX;
+    int cordY;
+    printf(" Ingrese sus cordenadas actuales:\n");
+    printf(" Coordenada X: ");
+    scanf("%d",&cordX);
+    printf(" Coordenada Y: ");
+    scanf("%d",&cordY);
+
+    Direccion * direccionInicial = (Direccion *)malloc(sizeof(Direccion));
+    direccionInicial->cordX = cordX;
+    direccionInicial->cordY = cordY;
+    direccionInicial->identificador = 0;
+    direccionInicial->visitada = 1;
+
+    Direccion * actual = direccionInicial;
+    Direccion * auxDireccion;
+
+    List * ruta = createList();
+    pushBack(ruta,direccionInicial);
+
+    HashMap * auxDirecciones = copiarHashmap(direcciones);
+
+    int entrada = 0;
+    char auxId[5];
+    List * auxAdjNodes = get_adj_nodes(auxDirecciones,actual);
+    while(first(auxAdjNodes) == NULL){
+        printf(" Seleccione la entrega que desea entregar(ingrese ID)\n");
+        mostrarDireccionesPorDistancia(auxAdjNodes);
+        printf(" Entrega: ");
+        scanf("%d",&entrada);
+        actual = buscarLista(auxAdjNodes,entrada);
+        while(actual == NULL){
+            printf(" ID no valida, por favor ingrese una ID de la lista: ");
+            scanf("%d",&entrada);
+            actual = buscarLista(auxAdjNodes,entrada);
+        }
+        pushBack(ruta,actual);
+        sprintf(auxId,"%d",actual->identificador);
+        auxDireccion = searchMap(auxDirecciones,auxId);
+        auxDireccion->visitada = 1;
+        auxAdjNodes = get_adj_nodes(auxDirecciones,actual);
+    }
+    direccionInicial = first(ruta);
+    direccionInicial->distancia = calcularDistancia(direccionInicial,actual);
+    mostrarRuta(ruta);
+    printf(" Ingrese un nombre para la ruta: ");
+    char nombreRuta[50];
+    gets(nombreRuta);
+    insertMap(rutasCreadas,nombreRuta,ruta);
+}

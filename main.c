@@ -10,6 +10,7 @@
 int main ()
 {
     HashMap * direcciones = createMap(100);
+    HashMap * rutasCreadas = createMap(100);
     char poscicion[20]; //ASUMO que no tendra tantos digitos ...
 
     int flag = 0;
@@ -116,7 +117,7 @@ int main ()
                     printf(" Archivo no iniciado, recuerde importar Direcciones\n");
                     break;
                 } 
-                //FUNCION***********************************************************************
+                crearRuta(direcciones,rutasCreadas);
                 printf ("===============================================================\n");
                 printf ("          Volver al menu: 1 - Salir del programa: 0\n");
                 printf ("===============================================================\n");

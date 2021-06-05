@@ -24,4 +24,14 @@ Direccion* copy(Direccion* n);
 
 void * get_adj_nodes(HashMap * direcciones,Direccion * n);
 
+void * copiarHashmap(HashMap * direcciones);
+
+void mostrarDireccionesPorDistancia(List * list);
+
+void mostrarRuta(List * ruta);
+
+void * buscarLista(List * list,int key);
+
+void crearRuta(HashMap * direcciones,HashMap * rutasCreadas);
+
 #endif /** entregas.h **/
