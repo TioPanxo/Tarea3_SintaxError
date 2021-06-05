@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "hashmap.h"
 #include "list.h"
+#include "hashmap.h"
 #include "entregas.h"
 
 
@@ -365,4 +365,4 @@ void crearRuta(HashMap * direcciones,HashMap * rutasCreadas){
     char nombreRuta[50];
     gets(nombreRuta);
     insertMap(rutasCreadas,nombreRuta,ruta);
-}
+} 

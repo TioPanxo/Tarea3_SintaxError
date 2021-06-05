@@ -1,8 +1,7 @@
-#include <stdlib.h>
-#include <stdio.h>
 
-#ifndef _list_h
-#define _list_h
+
+#ifndef list_h
+#define list_h
 
 typedef struct List List;
 typedef List Stack;
