@@ -241,7 +241,6 @@ void * get_adj_nodes(HashMap * direcciones,Direccion * n){
         if(aux->visitada == 0){
             node = copy(aux);
             node->distancia = calcularDistancia(aux,n);
-            printf("%.2lf\n",node->distancia);
             pushBack(list,node);
         }
         aux = nextMap(direcciones);
@@ -259,9 +258,10 @@ void * copiarHashmap(HashMap * direcciones){
     //copia del nodo
     Direccion * copia;
 
-    char auxKey[5];
+    char * auxKey;
 
     while(aux != NULL){
+        auxKey = (char*)malloc(sizeof(char)*5);
         copia = copy(aux);
         sprintf(auxKey,"%d",copia->identificador);
         insertMap(copiaMapa,auxKey,copia);
@@ -289,7 +289,7 @@ void mostrarDireccionesPorDistancia(List * list){
 }
 
 void mostrarRuta(List * ruta){
-    double distanciaRuta = 0;
+    double distanciaRuta = 0.0;
     Direccion * aux = first(ruta);
     int flag = 0;
     while(aux != NULL){
@@ -299,7 +299,7 @@ void mostrarRuta(List * ruta){
         }
         else printf("- %d ",aux->identificador);
         aux = next(ruta);
-        distanciaRuta += aux->distancia;
+        if(aux != NULL) distanciaRuta += aux->distancia;
     }
     printf("\n Distancia ruta: %.2lf\n",distanciaRuta);
     aux = first(ruta);
@@ -341,7 +341,8 @@ void crearRuta(HashMap * direcciones,HashMap * rutasCreadas){
     int entrada = 0;
     char auxId[5];
     List * auxAdjNodes = get_adj_nodes(auxDirecciones,actual);
-    while(first(auxAdjNodes) == NULL){
+
+    while(first(auxAdjNodes) != NULL){
         printf(" Seleccione la entrega que desea entregar(ingrese ID)\n");
         mostrarDireccionesPorDistancia(auxAdjNodes);
         printf(" Entrega: ");
@@ -353,7 +354,7 @@ void crearRuta(HashMap * direcciones,HashMap * rutasCreadas){
             actual = buscarLista(auxAdjNodes,entrada);
         }
         pushBack(ruta,actual);
-        sprintf(auxId,"%d",actual->identificador);
+        sprintf(auxId,"%d",entrada);
         auxDireccion = searchMap(auxDirecciones,auxId);
         auxDireccion->visitada = 1;
         auxAdjNodes = get_adj_nodes(auxDirecciones,actual);
@@ -362,7 +363,8 @@ void crearRuta(HashMap * direcciones,HashMap * rutasCreadas){
     direccionInicial->distancia = calcularDistancia(direccionInicial,actual);
     mostrarRuta(ruta);
     printf(" Ingrese un nombre para la ruta: ");
-    char nombreRuta[50];
+    char * nombreRuta = (char*)malloc(sizeof(char)*50);
+    while(getchar()!='\n');
     gets(nombreRuta);
     insertMap(rutasCreadas,nombreRuta,ruta);
 } 
