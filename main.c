@@ -162,7 +162,7 @@ int main (){
                     printf(" Archivo no iniciado, recuerde importar Direcciones\n");
                     break;
                 } 
-               //FUNCION***********************************************************************
+                mejorarRuta(rutasCreadas);
                 printf ("===============================================================\n");
                 printf ("          Volver al menu: 1 - Salir del programa: 0\n");
                 printf ("===============================================================\n");

@@ -410,3 +410,198 @@ void crearRutaAleatoria(HashMap * direcciones,HashMap * rutasCreadas){
     gets(nombreRuta);
     insertMap(rutasCreadas,nombreRuta,ruta);
 }
+
+double calcularDistanciaRuta(List * ruta){
+    Direccion * aux = first(ruta);
+    double distanciaTotal = 0.0;
+    while(aux != NULL){
+        aux = next(ruta);
+        if(aux != NULL) distanciaTotal += aux->distancia;
+    }
+    return distanciaTotal;
+}
+
+List * copiarRuta(List * ruta){
+    List * copia = createList();
+    Direccion * aux = first(ruta);
+    while(aux != NULL){
+        pushBack(copia,aux);
+        aux = next(ruta);
+    }
+    return copia;
+}
+
+void mejorarRuta (HashMap * rutasCreadas)
+{
+    printf(" Ingrese un nombre para la ruta a mejorar: ");
+    char * nombreRuta = (char*)malloc(sizeof(char)*50);
+    gets(nombreRuta);
+
+    //ruta Original
+    List * ruta = searchMap(rutasCreadas, nombreRuta);
+    if(ruta == NULL){
+        printf(" Ruta no encontrada. Volviendo al menu principal\n");
+        return;
+    }
+
+    //aux que sirve para buscar en la ruta
+    List * auxRuta = copiarRuta(ruta);
+
+    double distanciaRuta = calcularDistanciaRuta(ruta);
+
+    //nueva ruta
+    List * auxList = createList();
+
+    //recorre la ruta original
+    Direccion * auxiliarDireccion;
+
+    //dato que se agrega en la nueva ruta
+    Direccion * aux2;
+
+    //almacena la direccion del dato si este esta en la primera posicion
+    Direccion * primero = NULL;
+
+    printf (" Ingrese 1 para cambio manual, 2 para automatico: ");
+    int op,id1, id2;
+    //double distanciaRuta = 0.0;
+    scanf ("%d", &op);
+
+    mostrarRuta (ruta);
+
+    if (op == 1) {
+        printf (" ingrese la direccion 1 a intercambiar : ");
+        scanf ("%d", &id1);
+        aux2 = buscarLista(ruta,id1);
+        if(aux2 == NULL){
+            printf (" ingrese una ID valida: ");
+            scanf ("%d", &id1);
+        }
+        printf (" ingrese la direccion 2 a intercambiar : ");
+        scanf ("%d", &id2);
+        aux2 = buscarLista(ruta,id2);
+        if(aux2 == NULL || id1 == id2){
+            printf (" ingrese una ID valida(No se permiten ID repetidas): ");
+            scanf ("%d", &id2);
+        }
+        auxiliarDireccion = first(ruta);
+        while (auxiliarDireccion != NULL) {
+           if ((auxiliarDireccion->identificador == id1) || (auxiliarDireccion->identificador == id2) )
+           {
+               if (auxiliarDireccion->identificador == id1){
+                    aux2 = buscarLista(auxRuta, id2);
+                    if(first(auxList) == NULL){
+                        aux2->distancia = 0;
+                        primero = aux2;
+                    }
+                    else{
+                        aux2->distancia = calcularDistancia(aux2, last(auxList));
+                    }
+                    pushBack(auxList, aux2);
+               }
+               else if (auxiliarDireccion->identificador == id2) {
+                    aux2 = buscarLista(auxRuta, id1);
+                    if(first(auxList) == NULL){
+                        aux2->distancia = 0;
+                        primero = aux2;
+                    }
+                    else{
+                        aux2->distancia = calcularDistancia(aux2, last(auxList));
+                    }
+                    pushBack(auxList, aux2);
+               }
+           }
+           if ((auxiliarDireccion->identificador != id1) && (auxiliarDireccion->identificador != id2) )
+           {
+               pushBack(auxList, auxiliarDireccion);
+           }
+           
+           auxiliarDireccion = next(ruta);     
+        }
+        if(primero != NULL){
+            aux2 = buscarLista(auxList,primero->identificador);
+            aux2->distancia = calcularDistancia(aux2,last(auxList));
+        }
+        double distanciaNuevaRuta = calcularDistanciaRuta(auxList);
+        printf(" La distancia total de la nueva ruta es: %.2lf\n",distanciaNuevaRuta);
+        if(distanciaNuevaRuta < distanciaRuta){
+            printf(" La distancia de la nueva ruta es menor a la ruta anterior\n");
+            printf(" Intercambiando ruta antigua por nueva ruta\n");
+            eraseMap(rutasCreadas,nombreRuta);
+            insertMap(rutasCreadas,nombreRuta,auxList);
+            mostrarRuta(auxList);
+        }
+        else{
+            printf(" La distancia de la nueva no es mejor a la ruta anterior\n");
+            printf(" Se mantiene ruta anterior\n");
+        }
+    }
+    if (op == 2) {
+
+        id1 = rand() % (get_size(ruta) + 1);
+        aux2 = buscarLista(ruta,id1);
+        if(aux2 == NULL){
+            id1 = rand() % (get_size(ruta) + 1);
+        }
+        id2 = rand() % (get_size(ruta) + 1);
+        aux2 = buscarLista(ruta,id2);
+        if(aux2 == NULL || id1 == id2){
+            id2 = rand() % (get_size(ruta) + 1);
+        }
+        printf(" Intercambiando ID %d con ID %d\n",id1,id2);
+        auxiliarDireccion = first(ruta);
+        while (auxiliarDireccion != NULL) {
+           if ((auxiliarDireccion->identificador == id1) || (auxiliarDireccion->identificador == id2) )
+           {
+               if (auxiliarDireccion->identificador == id1){
+                    aux2 = buscarLista(auxRuta, id2);
+                    if(first(auxList) == NULL){
+                        aux2->distancia = 0;
+                        primero = aux2;
+                    }
+                    else{
+                        aux2->distancia = calcularDistancia(aux2, last(auxList));
+                    }
+                    pushBack(auxList, aux2);
+               }
+               else if (auxiliarDireccion->identificador == id2) {
+                    aux2 = buscarLista(auxRuta, id1);
+                    if(first(auxList) == NULL){
+                        aux2->distancia = 0;
+                        primero = aux2;
+                    }
+                    else{
+                        aux2->distancia = calcularDistancia(aux2, last(auxList));
+                    }
+                    pushBack(auxList, aux2);
+               }
+           }
+           if ((auxiliarDireccion->identificador != id1) && (auxiliarDireccion->identificador != id2) )
+           {
+               pushBack(auxList, auxiliarDireccion);
+           }
+           
+           auxiliarDireccion = next(ruta);     
+        }
+        if(primero != NULL){
+            aux2 = buscarLista(auxList,primero->identificador);
+            aux2->distancia = calcularDistancia(aux2,last(auxList));
+        }
+        double distanciaNuevaRuta = calcularDistanciaRuta(auxList);
+        printf(" La distancia total de la nueva ruta es: %.2lf\n",distanciaNuevaRuta);
+        if(distanciaNuevaRuta < distanciaRuta){
+            printf(" La distancia de la nueva ruta es menor a la ruta anterior\n");
+            printf(" Intercambiando ruta antigua por nueva ruta\n");
+            eraseMap(rutasCreadas,nombreRuta);
+            insertMap(rutasCreadas,nombreRuta,auxList);
+            mostrarRuta(auxList);
+        }
+        else{
+            printf(" La distancia de la nueva no es mejor a la ruta anterior\n");
+            printf(" Se mantiene ruta anterior\n");
+        }
+    }
+
+
+    //ruta = (rutasCreadas);
+    //mostrarRuta(ruta);
+}

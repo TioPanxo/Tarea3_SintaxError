@@ -36,4 +36,10 @@ void crearRuta(HashMap * direcciones,HashMap * rutasCreadas);
 
 void crearRutaAleatoria(HashMap * direcciones,HashMap * rutasCreadas);
 
+double calcularDistanciaRuta(List * ruta);
+
+List * copiarRuta(List * ruta);
+
+void mejorarRuta (HashMap * rutasCreadas);
+
 #endif /** entregas.h **/
