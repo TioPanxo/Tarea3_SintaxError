@@ -36,11 +36,4 @@ void crearRuta(HashMap * direcciones,HashMap * rutasCreadas);
 
 void crearRutaAleatoria(HashMap * direcciones,HashMap * rutasCreadas);
 
-void mostrarTodo (HashMap * rutasCreadas);
-
-void mejorarRuta (HashMap * rutasCreadas);
-
-//void bubbleSortRutas(Direccion ** auxList,int largo);
-
-
 #endif /** entregas.h **/
