@@ -40,7 +40,7 @@ void mostrarTodo (HashMap * rutasCreadas);
 
 void mejorarRuta (HashMap * rutasCreadas);
 
-void bubbleSortDistanciaTotal(Direccion ** auxList,int largo);
+//void bubbleSortRutas(Direccion ** auxList,int largo);
 
 
 #endif /** entregas.h **/

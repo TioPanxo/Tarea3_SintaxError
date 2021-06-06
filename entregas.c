@@ -483,42 +483,48 @@ void mostrarTodo (HashMap * rutasCreadas){
   
     List * ruta = firstMap(rutasCreadas);
     HashMap * rutasOrdenadas;
+    int i,j;
 
-/** 
-    Direccion ** auxList = (Direccion**) malloc(sizeof(Direccion * )*get_size(ruta));
+
+    List ** auxList = (List**) malloc(sizeof(List * )*get_size(ruta));
+
     int largo = get_size(ruta);
 
-    Direccion * node = first(ruta);
-    for(int i = 0;node != NULL;i++){
+    List * node = firstMap(rutasCreadas);
+    for( i = 0;node != NULL;i++){
         auxList[i] = node;
-        node = next(ruta);
+        node = nextMap(rutasCreadas);
     }
-    bubbleSortDistanciaTotal(auxList, largo);
 
-    for(int i = 0;i < largo;i++){
-        printf(" Nombre ruta: %s \n",auxList[i]->identificador);
-    }
-**/
-    //Direccion * auxDireccion = first(ruta); Me deja acceder a la dist total de la ruta
-
-    while (ruta != NULL)
+    //bubbleSortRutas(auxList,largo);
+    List * aux;
+    for ( i = 0; i < largo - 1; i++)
     {   
-        //Direccion * auxDireccion = first(ruta); //Me deja acceder a la dist total de la ruta actual, con auxDireccion->distanciaTotal
-        mostrarRuta(ruta);
+        Direccion * auxDireccion = first(auxList[i]);
+        Direccion * auxDireccion2 = first(auxList[i+1]);
+        
+        for(j = 0;j < largo - i - 1;j++){
+            if(auxDireccion->distanciaTotal > auxDireccion2->distanciaTotal){
+                aux = auxList[j+1];
+                auxList[j+1] = auxList[j];
+                auxList[j] = aux;
+            }
+        }
+        
+        
+    }
+    /**for (i = 0; i < largo; i++)
+    {
 
-        /** Faltaria hacer bubblesort e ir guardando de la mejor a la peor las rutas en el hashmap 
-         * (segun su distancia total recorrida) rutasOrdenadas, para luego imprimir como lo hago aca, 
-         * pero con el mapa rutasOrdenadas en vez del mapa rutasCreadas **/
-
-        //printf ("===============================================================\n");
-        ruta = nextMap(rutasCreadas);
-    } 
-    //int largo = get_size(ruta);
-
+    }
     
 }
-/** void bubbleSortDistanciaTotal(Direccion ** Array,int largo){
+/** 
+ void bubbleSortRutas(Direccion ** Array, int largo){
     int i,j;
+    //List * ruta = firstMap(rutasCreadas);
+    //Direccion * auxDireccion = first(ruta);
+    //int largo = get_size(ruta);
     Direccion * aux;
 
 
