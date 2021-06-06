@@ -36,4 +36,9 @@ void crearRuta(HashMap * direcciones,HashMap * rutasCreadas);
 
 void crearRutaAleatoria(HashMap * direcciones,HashMap * rutasCreadas);
 
+void mostrarTodo (HashMap * rutasCreadas);
+
+void mejorarRuta (HashMap * rutasCreadas);
+
+
 #endif /** entregas.h **/

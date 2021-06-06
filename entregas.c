@@ -13,6 +13,7 @@ typedef struct Direccion {
     int identificador;  //"Numero" de la direccion segun el archivo .txt
     int visitada;       //const value 0
     double distancia; //Distancia desde la direccion anterior
+    double distanciaTotal;
 } Direccion;
 
 /** https://www.tutorialspoint.com/c_standard_library/c_function_strtok.htm
@@ -137,6 +138,7 @@ void mostrarDireccionesPorId(HashMap * direcciones){
 }
 
 double calcularDistancia(Direccion * aux1,Direccion * aux2){
+    if (aux1 == NULL || aux2 == NULL ) return 0;
     double dist;
     dist = pow(aux2->cordX - aux1->cordX,2.0) + pow(aux2->cordY - aux1->cordY,2.0);
     dist = sqrt(dist);
@@ -303,6 +305,7 @@ void mostrarRuta(List * ruta){
     }
     printf("\n Distancia ruta: %.2lf\n",distanciaRuta);
     aux = first(ruta);
+    aux->distanciaTotal = distanciaRuta;    //Almacenada en el primer nodo de la ruta
     printf(" Distancia desde la direccion inicial hasta la ultima: %.2lf\n",aux->distancia);
 }
 
@@ -409,4 +412,117 @@ void crearRutaAleatoria(HashMap * direcciones,HashMap * rutasCreadas){
     char * nombreRuta = (char*)malloc(sizeof(char)*50);
     gets(nombreRuta);
     insertMap(rutasCreadas,nombreRuta,ruta);
+}
+
+void mejorarRuta (HashMap * rutasCreadas)
+{
+    printf(" Ingrese un nombre para la ruta a mejorar: ");
+    char * nombreRuta = (char*)malloc(sizeof(char)*50);
+    gets(nombreRuta);
+
+    List * ruta = searchMap(rutasCreadas, nombreRuta);
+    List * auxList;
+    Direccion * auxiliarDireccion;
+    Direccion * aux2;
+
+    mostrarRuta (ruta);
+    printf ("Ingrese 1 para cambio manual, 0 para automatico: ");
+    int op,id1, id2;
+    double distanciaRuta = 0.0;
+    scanf ("%d", &op);
+
+    if (op == 1) {
+        printf ("ingrese la direccion 1 a intercambiar :\n");
+        scanf ("%d", &id1);
+        printf ("ingrese la direccion 2 a intercambiar :\n");
+        scanf ("%d", &id2);
+        auxiliarDireccion = first(ruta);
+        while (auxiliarDireccion != NULL) {
+           if ((auxiliarDireccion->identificador == id1) || (auxiliarDireccion->identificador == id2) )
+           {
+               if (auxiliarDireccion->identificador == id1)
+               {
+                   aux2 = buscarLista(ruta, id2);
+                   //aux2->distancia = calcularDistancia(aux2, last(aux));
+                   pushBack(auxList, aux2);
+               }
+               else if (auxiliarDireccion->identificador == id2) {
+                   aux2 = buscarLista(ruta, id1);
+                   //aux2->distancia = calcularDistancia(aux2, last(aux));
+                   pushBack(auxList, aux2);
+               }
+           }
+           if ((auxiliarDireccion->identificador != id1) && (auxiliarDireccion->identificador != id2) )
+           {
+               pushBack(auxList, auxiliarDireccion);
+           }
+           if(aux2 != NULL) distanciaRuta += aux2->distancia;
+           auxiliarDireccion = next(ruta);     
+        }
+    }
+    if (op == 2) {
+
+        List * auxList;
+        auxiliarDireccion = first(ruta);
+        while (auxiliarDireccion != NULL)
+        {
+            pushBack(auxList, auxiliarDireccion);
+
+            auxiliarDireccion = next(ruta);
+        }
+        mostrarRuta(auxList);
+    }
+
+
+    //ruta = (rutasCreadas);
+    //mostrarRuta(ruta);
+}
+
+
+
+/** void bubblesortDirecciones (HashMap * rutasCreadas, int largo)
+{
+    int i,j;
+    double dist;
+    List * auxList = firstMap(rutasCreadas);
+    dist = calcularDistanciaRuta(auxList);
+    //Direccion * auxDireccion = first(auxList);
+
+
+    for(i = 0;i < largo - 1;i++){
+        for(j = 0;j < largo - i - 1;j++){
+            if(Array[j]->distancia > Array[j+1]->distancia){
+                aux = Array[j+1];
+                Array[j+1] = Array[j];
+                Array[j] = aux;
+            }
+        }
+    }
+
+} **/
+void mostrarTodo (HashMap * rutasCreadas){
+  
+    //List * ruta = createList();
+    List * ruta = firstMap(rutasCreadas);
+    HashMap * rutasOrdenadas;
+    
+    char * nombreRuta = (char*)malloc(sizeof(char)*50);
+    gets(nombreRuta);
+    double dist;
+    //Direccion * auxDireccion = first(ruta); Me deja acceder a la dist total de la ruta
+
+    while (ruta != NULL)
+    {   
+        //Direccion * auxDireccion = first(ruta); //Me deja acceder a la dist total de la ruta actual, con auxDireccion->distanciaTotal
+        mostrarRuta(ruta);
+        
+        /** Faltaria hacer bubblesort e ir guardando de la mejor a la peor las rutas en el hashmap 
+         * (segun su distancia total recorrida) rutasOrdenadas, para luego imprimir como lo hago aca, 
+         * pero con el mapa rutasOrdenadas en vez del mapa rutasCreadas **/
+        printf ("===============================================================\n");
+        ruta = nextMap(rutasCreadas);
+    }
+    //int largo = get_size(ruta);
+    //bubblesortDirecciones(ruta,largo);
+    
 }
