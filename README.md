@@ -1,5 +1,5 @@
-# Tarea3_SintaxError
-# Tarea 2 Sintaxis Error
+# Tarea 3 SintaxError
+
 
 ## Consideraciones
 
