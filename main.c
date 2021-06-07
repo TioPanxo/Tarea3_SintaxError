@@ -14,6 +14,7 @@ int main (){
     srand(time(NULL));
     HashMap * direcciones = createMap(100);
     HashMap * rutasCreadas = createMap(100);
+    List * listaDeNombres = createList();
     char poscicion[20]; //ASUMO que no tendra tantos digitos ...
 
     int flag = 0;
@@ -120,7 +121,7 @@ int main (){
                     printf(" Archivo no iniciado, recuerde importar Direcciones\n");
                     break;
                 } 
-                crearRuta(direcciones,rutasCreadas);
+                crearRuta(direcciones,rutasCreadas,listaDeNombres);
                 printf ("===============================================================\n");
                 printf ("          Volver al menu: 1 - Salir del programa: 0\n");
                 printf ("===============================================================\n");
@@ -141,7 +142,7 @@ int main (){
                     printf(" Archivo no iniciado, recuerde importar Direcciones\n");
                     break;
                 } 
-                crearRutaAleatoria(direcciones,rutasCreadas);
+                crearRutaAleatoria(direcciones,rutasCreadas,listaDeNombres);
                 printf ("===============================================================\n");
                 printf ("          Volver al menu: 1 - Salir del programa: 0\n");
                 printf ("===============================================================\n");
@@ -183,7 +184,7 @@ int main (){
                     printf(" Archivo no iniciado, recuerde importar Direcciones\n");
                     break;
                 } 
-                //FUNCION***********************************************************************
+                mostarRutas(rutasCreadas,listaDeNombres);
                 printf ("===============================================================\n");
                 printf ("          Volver al menu: 1 - Salir del programa: 0\n");
                 printf ("===============================================================\n");

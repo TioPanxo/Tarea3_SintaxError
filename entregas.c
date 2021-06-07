@@ -299,8 +299,8 @@ void mostrarRuta(List * ruta){
         }
         else printf("- %d ",aux->identificador);
         aux = next(ruta);
-        if(aux != NULL) distanciaRuta += aux->distancia;
     }
+    distanciaRuta = calcularDistanciaRuta(ruta);
     printf("\n Distancia ruta: %.2lf\n",distanciaRuta);
     aux = first(ruta);
     printf(" Distancia desde la direccion inicial hasta la ultima: %.2lf\n",aux->distancia);
@@ -315,7 +315,7 @@ void * buscarLista(List * list,int key){
     return NULL;
 }
 
-void crearRuta(HashMap * direcciones,HashMap * rutasCreadas){
+void crearRuta(HashMap * direcciones,HashMap * rutasCreadas,List * listaDeNombres){
     int cordX;
     int cordY;
     printf(" Ingrese sus cordenadas actuales:\n");
@@ -367,9 +367,10 @@ void crearRuta(HashMap * direcciones,HashMap * rutasCreadas){
     while(getchar()!='\n');
     gets(nombreRuta);
     insertMap(rutasCreadas,nombreRuta,ruta);
+    pushBack(listaDeNombres,nombreRuta);
 } 
 
-void crearRutaAleatoria(HashMap * direcciones,HashMap * rutasCreadas){
+void crearRutaAleatoria(HashMap * direcciones,HashMap * rutasCreadas,List * listaDeNombres){
     Direccion * direccionInicial = (Direccion *)malloc(sizeof(Direccion));
     direccionInicial->cordX = 0;
     direccionInicial->cordY = 0;
@@ -409,6 +410,7 @@ void crearRutaAleatoria(HashMap * direcciones,HashMap * rutasCreadas){
     char * nombreRuta = (char*)malloc(sizeof(char)*50);
     gets(nombreRuta);
     insertMap(rutasCreadas,nombreRuta,ruta);
+    pushBack(listaDeNombres,nombreRuta);
 }
 
 double calcularDistanciaRuta(List * ruta){
@@ -600,8 +602,58 @@ void mejorarRuta (HashMap * rutasCreadas)
             printf(" Se mantiene ruta anterior\n");
         }
     }
+}
+
+void mostarRutas(HashMap * rutasCreadas,List * listaDeNombres){
+    int largo = get_size(listaDeNombres);
+    int i,j;
+
+    //arreglo de las rutas
+    List ** array1 = (List **)malloc(sizeof(List *) * largo);
+
+    //arreglo de los nombres de las rutas
+    char ** array2 = (char **)malloc(sizeof(char *) * largo);
+
+    //arreglo de las distancias de las rutas
+    double * array3 = (double *)malloc(sizeof(double) * largo);
+
+    //aux arreglo 
+    char * nombreRutaAux = first(listaDeNombres);
+    for(i = 0;i < largo && nombreRutaAux != NULL;i++){
+        array2[i] = nombreRutaAux;
+
+        array1[i] = searchMap(rutasCreadas,nombreRutaAux);
+
+        array3[i] = calcularDistanciaRuta(array1[i]);
+
+        nombreRutaAux = next(listaDeNombres);
+    }
 
 
-    //ruta = (rutasCreadas);
-    //mostrarRuta(ruta);
+    double auxDistancia;
+    List * rutaAux;
+
+    for(i = 0;i < largo - 1;i++){
+        for(j = 0;j < largo - i - 1;j++){
+            if(array3[j] > array3[j+1]){
+                auxDistancia = array3[j+1];
+                array3[j+1] = array3[j];
+                array3[j] = auxDistancia;
+
+                rutaAux = array1[j+1];
+                array1[j+1] = array1[j];
+                array1[j] = rutaAux;
+
+                nombreRutaAux = array2[j+1];
+                array2[j+1] = array2[j];
+                array2[j] = nombreRutaAux; 
+            }
+        }
+    }
+
+    for(i = 0;i < largo;i++){
+        printf(" Nombre Ruta: %s\n",array2[i]);
+        mostrarRuta(array1[i]);
+        printf("\n");
+    }
 }

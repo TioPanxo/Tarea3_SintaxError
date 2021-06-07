@@ -32,14 +32,16 @@ void mostrarRuta(List * ruta);
 
 void * buscarLista(List * list,int key);
 
-void crearRuta(HashMap * direcciones,HashMap * rutasCreadas);
+void crearRuta(HashMap * direcciones,HashMap * rutasCreadas,List * listaDeNombres);
 
-void crearRutaAleatoria(HashMap * direcciones,HashMap * rutasCreadas);
+void crearRutaAleatoria(HashMap * direcciones,HashMap * rutasCreadas,List * listaDeNombres);
 
 double calcularDistanciaRuta(List * ruta);
 
 List * copiarRuta(List * ruta);
 
 void mejorarRuta (HashMap * rutasCreadas);
+
+void mostarRutas(HashMap * rutasCreadas,List * listaDeNombres);
 
 #endif /** entregas.h **/
