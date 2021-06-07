@@ -654,6 +654,6 @@ void mostarRutas(HashMap * rutasCreadas,List * listaDeNombres){
     for(i = 0;i < largo;i++){
         printf(" Nombre Ruta: %s\n",array2[i]);
         mostrarRuta(array1[i]);
-        printf("\n");
+        printf("----------------------------------------------------------------\n");
     }
 }

@@ -34,7 +34,7 @@ int main (){
         printf("|   5.- Generar ruta aleatoria                                |\n");
         printf("|   6.- Mejorar ruta                                          |\n");
         printf("|   7.- Mostrar rutas                                         |\n");
-        printf("|   8.- Mejor rutas                                           |\n");
+        printf("|   8.- Ruta Optima                                           |\n");
         printf("|   0.- Salir del programa                                    |\n");
         printf("===============================================================\n");
         printf(" Ingrese un numero: ");
@@ -205,7 +205,7 @@ int main (){
                     printf(" Archivo no iniciado, recuerde importar Direcciones\n");
                     break;
                 } 
-                //FUNCION***********************************************************************
+                printf ("================ RUTA OPTIMA NO DISPONIBLE ====================\n");
                 printf ("===============================================================\n");
                 printf ("          Volver al menu: 1 - Salir del programa: 0\n");
                 printf ("===============================================================\n");
